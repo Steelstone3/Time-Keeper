@@ -1,0 +1,32 @@
+[package]
+name = "time-keeper"
+version = "1.0.0"
+authors = ["Skippy <steelstone3@gmail.com>"]
+edition = "2024"
+homepage = "https://github.com/Steelstone3/Time-Keeper"
+repository = "https://github.com/Steelstone3/Time-Keeper"
+license = "GPLv3"
+readme = "README.md"
+include = []
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+resolver = "2"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[dependencies]
+iced = "0.13"
+iced_aw = "0.12"
+chrono = {version = "0", default-features = false }
+rstest = "0"
