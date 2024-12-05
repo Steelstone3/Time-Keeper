@@ -1,4 +1,3 @@
-
 use super::{application_state::ApplicationState, new_line::NewLine};
 
 #[derive(Default)]

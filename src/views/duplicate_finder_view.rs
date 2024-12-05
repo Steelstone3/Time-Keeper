@@ -1,6 +1,6 @@
 use crate::{commands::messages::Message, models::duplicate_finder::DuplicateFinder};
 use iced::{
-    widget::{column, text, Column},
+    widget::{button, column, text, Column},
     Renderer, Theme,
 };
 use iced_aw::Card;
@@ -10,6 +10,11 @@ impl DuplicateFinder {
         let mut contents = column![];
 
         if !self.duplicate_lines.is_empty() {
+            contents = contents
+                .push(button("Remove Duplicates").on_press(Message::DuplicateRemovePressed))
+                .padding(10)
+                .spacing(10);
+
             for duplicate_lines in self.duplicate_line_cards() {
                 contents = contents.push(duplicate_lines).spacing(10);
             }

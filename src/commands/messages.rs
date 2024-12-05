@@ -1,4 +1,3 @@
-
 use iced::widget::text_editor;
 
 use super::tab_identifier::TabIdentifier;
@@ -15,5 +14,6 @@ pub enum Message {
     ViewPrependLineNumbersPressed,
     ViewThemeChanged,
     EditorChanged(text_editor::Action),
-    DuplicateSearchPressed
+    DuplicateSearchPressed,
+    DuplicateRemovePressed,
 }

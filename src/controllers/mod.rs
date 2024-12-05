@@ -1,2 +1,3 @@
-pub mod parse_duplicates;
-pub mod prepend_line_numbers;
+pub mod duplicates;
+pub mod editor;
+pub mod line_numbers;

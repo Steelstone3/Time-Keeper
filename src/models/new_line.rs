@@ -8,6 +8,10 @@ pub struct NewLine {
 
 impl Display for NewLine {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(formatter, "Line Number:: {}\nContent:: {}", self.line_number, self.content)
+        write!(
+            formatter,
+            "Line Number:: {}\nContent:: {}",
+            self.line_number, self.content
+        )
     }
 }

@@ -1,9 +1,9 @@
-use iced::widget::{column, Column, Scrollable};
-use iced_aw::{TabBar, TabLabel};
 use crate::{
     commands::{messages::Message, tab_identifier::TabIdentifier},
     models::duplicate_finder::DuplicateFinder,
 };
+use iced::widget::{column, Column, Scrollable};
+use iced_aw::{TabBar, TabLabel};
 
 impl DuplicateFinder {
     pub fn tab_bar_view(&self) -> Column<Message> {
