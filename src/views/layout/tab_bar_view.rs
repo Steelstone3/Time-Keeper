@@ -2,7 +2,7 @@ use crate::{
     commands::{messages::Message, tab_identifier::TabIdentifier},
     models::duplicate_finder::DuplicateFinder,
 };
-use iced::widget::{column, Column, Scrollable};
+use iced::widget::{Column, Scrollable, column};
 use iced_aw::{TabBar, TabLabel};
 
 impl DuplicateFinder {
@@ -27,7 +27,7 @@ impl DuplicateFinder {
 }
 
 fn selected_tab_bar(active_tab: &TabIdentifier) -> TabBar<'static, Message, TabIdentifier> {
-    let tab_bar = TabBar::new(Message::SelectedTabChanged)
+    TabBar::new(Message::SelectedTabChanged)
         .push(
             TabIdentifier::Editor,
             TabLabel::IconText('\u{1F4D3}', "Editor".to_string()),
@@ -36,6 +36,5 @@ fn selected_tab_bar(active_tab: &TabIdentifier) -> TabBar<'static, Message, TabI
             TabIdentifier::DuplicateFinder,
             TabLabel::IconText('\u{1F50D}', "Duplicate Finder".to_string()),
         )
-        .set_active_tab(active_tab);
-    tab_bar
+        .set_active_tab(active_tab)
 }

@@ -107,9 +107,11 @@ mod duplicates_should {
             duplicate_finder.duplicate_lines.len()
         );
         for expected_duplicate in expected_duplicates {
-            assert!(duplicate_finder
-                .duplicate_lines
-                .contains(&expected_duplicate));
+            assert!(
+                duplicate_finder
+                    .duplicate_lines
+                    .contains(&expected_duplicate)
+            );
         }
     }
 

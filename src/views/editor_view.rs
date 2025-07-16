@@ -1,5 +1,5 @@
 use crate::{commands::messages::Message, models::duplicate_finder::DuplicateFinder};
-use iced::widget::{button, column, text, text_editor, Column};
+use iced::widget::{Column, button, column, text, text_editor};
 use iced_aw::Card;
 
 impl DuplicateFinder {

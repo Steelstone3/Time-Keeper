@@ -1,8 +1,8 @@
 use crate::{commands::messages::Message, models::duplicate_finder::DuplicateFinder};
-use iced::widget::{button, column};
 use iced::Length;
+use iced::widget::{button, column};
 use iced_aw::menu::Item;
-use iced_aw::{menu_bar, menu_items, Menu};
+use iced_aw::{Menu, menu_bar, menu_items};
 
 impl DuplicateFinder {
     pub fn menu_view(&self) -> iced::widget::Column<Message> {

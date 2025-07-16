@@ -1,7 +1,7 @@
 use crate::{commands::messages::Message, models::duplicate_finder::DuplicateFinder};
 use iced::{
-    widget::{button, column, text, Column},
     Renderer, Theme,
+    widget::{Column, button, column, text},
 };
 use iced_aw::Card;
 

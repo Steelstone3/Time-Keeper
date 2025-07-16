@@ -1,8 +1,8 @@
 [package]
 name = "duplicate-finder"
-version = "1.2.1"
+version = "1.2.2"
 authors = ["Skippy <steelstone3@gmail.com>"]
-edition = "2021"
+edition = "2024"
 homepage = "https://github.com/Steelstone3/Bubbles-Dive-Planner/tree/iced-version"
 repository = "https://github.com/Steelstone3/Bubbles-Dive-Planner/tree/iced-version"
 license = "GPLv3"
@@ -25,10 +25,7 @@ opt-level = 0
 [profile.dev.package."*"]
 opt-level = 3
 
-[dev-dependencies]
-rstest = "0"
-
 [dependencies]
 iced = "0.13"
-iced_aw = "0.11"
+iced_aw = "0.12"
 rstest = "0"
