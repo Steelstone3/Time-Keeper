@@ -1,5 +1,5 @@
 use iced::Settings;
-use models::duplicate_finder::DuplicateFinder;
+use models::duplicate_finder::TimeKeeper;
 
 mod commands;
 mod controllers;
@@ -8,11 +8,11 @@ mod views;
 
 pub fn main() -> iced::Result {
     iced::application(
-        "Duplicate Finder",
-        DuplicateFinder::update,
-        DuplicateFinder::view,
+        "Time Keeper",
+        TimeKeeper::update,
+        TimeKeeper::view,
     )
-    .theme(DuplicateFinder::theme)
+    .theme(TimeKeeper::theme)
     .antialiasing(true)
     .settings(Settings::default())
     .run()

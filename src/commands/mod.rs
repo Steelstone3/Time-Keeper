@@ -1,3 +1,2 @@
-pub mod duplicate_finder;
+pub mod time_keeper;
 pub mod messages;
-pub mod tab_identifier;

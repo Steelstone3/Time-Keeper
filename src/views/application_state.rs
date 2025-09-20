@@ -1,34 +1,16 @@
-use crate::{
-    commands::{messages::Message, tab_identifier::TabIdentifier},
-    models::duplicate_finder::DuplicateFinder,
-};
-use iced::{Element, Theme};
+use crate::commands::messages::Message;
+use crate::models::duplicate_finder::TimeKeeper;
+use iced::widget::column;
+use iced::{Element, Theme, widget::Scrollable};
 
-impl DuplicateFinder {
+impl TimeKeeper {
     pub fn view(&self) -> Element<'_, Message> {
-        self.tab_bar_view().into()
-    }
+        let contents = Scrollable::new(column!().push(self.calculator_view()));
 
-    pub fn switch_tab(&mut self, tab_identifier: TabIdentifier) {
-        match tab_identifier {
-            TabIdentifier::Editor => self.application_state.tab = TabIdentifier::Editor,
-            TabIdentifier::DuplicateFinder => {
-                self.application_state.tab = TabIdentifier::DuplicateFinder
-            }
-        }
+        column!(contents).into()
     }
 
     pub fn theme(&self) -> Theme {
-        match self.application_state.is_light_theme {
-            true => Theme::Light,
-            false => Theme::Dark,
-        }
-    }
-
-    pub fn switch_theme(&mut self) {
-        match self.application_state.is_light_theme {
-            true => self.application_state.is_light_theme = false,
-            false => self.application_state.is_light_theme = true,
-        }
+        Theme::Dark
     }
 }
