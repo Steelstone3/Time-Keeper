@@ -26,6 +26,7 @@ opt-level = 0
 opt-level = 3
 
 [dependencies]
+# iced_aw = "0.12"
 iced = "0.13"
-iced_aw = "0.12"
+chrono = { version = "0.4", default-features = false }
 rstest = "0"
