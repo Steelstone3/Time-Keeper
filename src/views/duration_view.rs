@@ -31,7 +31,7 @@ impl TimeKeeper {
             .padding(10);
 
         column!()
-            .push(Card::new("End Time Calculator", contents))
+            .push(Card::new("Duration Calculator", contents))
             .spacing(10)
             .padding(10)
     }

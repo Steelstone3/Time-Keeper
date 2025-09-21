@@ -30,11 +30,11 @@ fn selected_tab_bar(active_tab: &TabIdentifier) -> TabBar<'static, Message, TabI
     TabBar::new(Message::SelectedTabChanged)
         .push(
             TabIdentifier::EndTime,
-            TabLabel::IconText('\u{1F4D3}', "End Time".to_string()),
+            TabLabel::IconText('\u{1F551}', "End Time".to_string()),
         )
         .push(
             TabIdentifier::Duration,
-            TabLabel::IconText('\u{1F50D}', "Duration".to_string()),
+            TabLabel::IconText('\u{231B}', "Duration".to_string()),
         )
         .set_active_tab(active_tab)
 }
