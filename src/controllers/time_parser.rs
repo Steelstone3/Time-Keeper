@@ -25,17 +25,18 @@ impl TimeKeeper {
     }
 
     pub fn parse_operations(&self) -> Vec<char> {
-        let add = '+';
-        let subtract = '-';
+        let mut operations: Vec<char> = vec![];
 
-        let trimmed_time_calculation_string = self.time_calculation_string.trim();
+        let trimmed = self.time_calculation_string.trim();
 
-        vec![]
+        for time_string_character in trimmed.chars() {
+            if time_string_character == '+' || time_string_character == '-' {
+                operations.push(time_string_character);
+            }
+        }
+
+        operations
     }
-
-    fn extract_times() {}
-
-    fn convert_to_time() {}
 }
 
 #[cfg(test)]
@@ -51,12 +52,13 @@ mod time_parser_should {
     #[rstest]
     #[case("", vec![] )]
     #[case("14:00", vec![NaiveTime::from_str("14:00").unwrap()] )]
-    #[case("14:00 + 15:00 + 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
+    #[case("14:00 + 15:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap()] )]
+    #[case("14:00 - 15:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap()] )]
     #[case("14:00 + 15:00 + 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
     #[case("14:00 + 15:00 - 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
     #[case("14:00 - 15:00 + 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
     #[case("14:00 - 15:00 - 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
-    fn parse_succesfully(#[case] time_string: String, #[case] actual_parsed_times: Vec<NaiveTime>) {
+    fn parse_time(#[case] time_string: String, #[case] actual_parsed_times: Vec<NaiveTime>) {
         // Given
         let time_keeper = TimeKeeper {
             time_calculation_string: time_string,
@@ -69,6 +71,34 @@ mod time_parser_should {
         // Then
         for index in 0..actual_parsed_times.len() {
             assert_eq!(actual_parsed_times.get(index), parsed_times.get(index));
+        }
+    }
+
+    #[rstest]
+    #[case("", vec![] )]
+    #[case("14:00", vec![] )]
+    #[case("14:00 + 15:00", vec!['+'] )]
+    #[case("14:00 - 15:00", vec!['-'] )]
+    #[case("14:00 + 15:00 + 16:00", vec!['+','+'])]
+    #[case("14:00 + 15:00 - 16:00", vec!['+','-'])]
+    #[case("14:00 - 15:00 + 16:00", vec!['-','+'])]
+    #[case("14:00 - 15:00 - 16:00", vec!['-','-'])]
+    fn parse_operation(#[case] time_string: String, #[case] actual_parsed_operations: Vec<char>) {
+        // Given
+        let time_keeper = TimeKeeper {
+            time_calculation_string: time_string,
+            ..Default::default()
+        };
+
+        // When
+        let parsed_operations = time_keeper.parse_operations();
+
+        // Then
+        for index in 0..actual_parsed_operations.len() {
+            assert_eq!(
+                actual_parsed_operations.get(index),
+                parsed_operations.get(index)
+            );
         }
     }
 }
