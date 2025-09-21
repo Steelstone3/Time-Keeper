@@ -1,4 +1,4 @@
-use crate::{commands::messages::Message, models::duplicate_finder::TimeKeeper};
+use crate::{commands::messages::Message, models::time_keeper::TimeKeeper};
 use iced::widget::{Column, button, column, text, text_input};
 
 

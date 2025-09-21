@@ -1,10 +1,10 @@
-use chrono::NaiveTime;
+use chrono::{Duration, NaiveTime};
 use std::str::FromStr;
 
-use crate::models::duplicate_finder::TimeKeeper;
+use crate::models::{time_keeper::TimeKeeper, time_or_duration::TimeOrDuration};
 
 impl TimeKeeper {
-    pub fn parse_times(&self) -> Vec<NaiveTime> {
+    pub fn parse_times(&self) -> Vec<TimeOrDuration> {
         let mut times = vec![];
 
         let trimmed = self.time_calculation_string.trim();
@@ -16,8 +16,21 @@ impl TimeKeeper {
         for string_time in string_times {
             let string_time = string_time.trim();
 
-            if let Ok(time) = NaiveTime::from_str(string_time) {
-                times.push(time);
+            if string_time.contains(':') {
+                if let Ok(time) = NaiveTime::from_str(string_time) {
+                    let time = TimeOrDuration::new_time(time);
+                    times.push(time);
+                }
+            } else {
+                match string_time.parse() {
+                    Ok(hours) => {
+                        let duration = Duration::hours(hours);
+                        let duration = TimeOrDuration::new_duration(duration);
+
+                        times.push(duration);
+                    }
+                    Err(_) => {}
+                }
             }
         }
 
@@ -41,24 +54,26 @@ impl TimeKeeper {
 
 #[cfg(test)]
 mod time_parser_should {
-
-    use std::str::FromStr;
-
-    use chrono::NaiveTime;
+    use crate::models::{time_keeper::TimeKeeper, time_or_duration::TimeOrDuration};
+    use chrono::{Duration, NaiveTime};
     use rstest::rstest;
-
-    use crate::models::duplicate_finder::TimeKeeper;
+    use std::str::FromStr;
 
     #[rstest]
     #[case("", vec![] )]
-    #[case("14:00", vec![NaiveTime::from_str("14:00").unwrap()] )]
-    #[case("14:00 + 15:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap()] )]
-    #[case("14:00 - 15:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap()] )]
-    #[case("14:00 + 15:00 + 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
-    #[case("14:00 + 15:00 - 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
-    #[case("14:00 - 15:00 + 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
-    #[case("14:00 - 15:00 - 16:00", vec![NaiveTime::from_str("14:00").unwrap(), NaiveTime::from_str("15:00").unwrap(), NaiveTime::from_str("16:00").unwrap()] )]
-    fn parse_time(#[case] time_string: String, #[case] actual_parsed_times: Vec<NaiveTime>) {
+    #[case("14:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap())] )]
+    #[case("14:00 + 15:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap())] )]
+    #[case("14:00 - 15:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap())] )]
+    #[case("14:00 + 15:00 + 16:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("16:00").unwrap())] )]
+    #[case("14:00 + 15:00 - 16:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("16:00").unwrap())] )]
+    #[case("14:00 - 15:00 + 16:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("16:00").unwrap())] )]
+    #[case("14:00 - 15:00 - 16:00", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("15:00").unwrap()), TimeOrDuration::new_time(NaiveTime::from_str("16:00").unwrap())] )]
+    #[case("14:00 - 6", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_duration(Duration::hours(6))] )]
+    #[case("14:00 + 6", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_duration(Duration::hours(6))] )]
+    #[case("14:00 + 6 - 6", vec![TimeOrDuration::new_time(NaiveTime::from_str("14:00").unwrap()), TimeOrDuration::new_duration(Duration::hours(6)), TimeOrDuration::new_duration(Duration::hours(6))] )]
+    #[case("asdasd", vec![] )]
+    #[case("asdasd + asdas234$%#$%@#dasd", vec![] )]
+    fn parse_time(#[case] time_string: String, #[case] expected_parsed_times: Vec<TimeOrDuration>) {
         // Given
         let time_keeper = TimeKeeper {
             time_calculation_string: time_string,
@@ -69,8 +84,8 @@ mod time_parser_should {
         let parsed_times = time_keeper.parse_times();
 
         // Then
-        for index in 0..actual_parsed_times.len() {
-            assert_eq!(actual_parsed_times.get(index), parsed_times.get(index));
+        for index in 0..expected_parsed_times.len() {
+            assert_eq!(expected_parsed_times.get(index), parsed_times.get(index));
         }
     }
 
@@ -83,7 +98,7 @@ mod time_parser_should {
     #[case("14:00 + 15:00 - 16:00", vec!['+','-'])]
     #[case("14:00 - 15:00 + 16:00", vec!['-','+'])]
     #[case("14:00 - 15:00 - 16:00", vec!['-','-'])]
-    fn parse_operation(#[case] time_string: String, #[case] actual_parsed_operations: Vec<char>) {
+    fn parse_operation(#[case] time_string: String, #[case] expected_parsed_operations: Vec<char>) {
         // Given
         let time_keeper = TimeKeeper {
             time_calculation_string: time_string,
@@ -94,9 +109,9 @@ mod time_parser_should {
         let parsed_operations = time_keeper.parse_operations();
 
         // Then
-        for index in 0..actual_parsed_operations.len() {
+        for index in 0..expected_parsed_operations.len() {
             assert_eq!(
-                actual_parsed_operations.get(index),
+                expected_parsed_operations.get(index),
                 parsed_operations.get(index)
             );
         }

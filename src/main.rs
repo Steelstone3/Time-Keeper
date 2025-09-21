@@ -1,5 +1,5 @@
 use iced::Settings;
-use models::duplicate_finder::TimeKeeper;
+use models::time_keeper::TimeKeeper;
 
 mod commands;
 mod controllers;

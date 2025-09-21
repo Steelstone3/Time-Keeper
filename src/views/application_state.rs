@@ -1,5 +1,5 @@
 use crate::commands::messages::Message;
-use crate::models::duplicate_finder::TimeKeeper;
+use crate::models::time_keeper::TimeKeeper;
 use iced::widget::column;
 use iced::{Element, Theme, widget::Scrollable};
 
