@@ -50,6 +50,18 @@ impl TimeKeeper {
 
         operations
     }
+
+     pub fn parse_operation(&self) -> char {
+        let trimmed = self.time_calculation_string.trim();
+
+        for time_string_character in trimmed.chars() {
+            if time_string_character == '+' || time_string_character == '-' {
+                return time_string_character
+            }
+        }
+
+        ' '
+    }
 }
 
 #[cfg(test)]

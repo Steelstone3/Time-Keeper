@@ -6,8 +6,8 @@ impl TimeKeeper {
             Message::TimeParserChanged(time_input) => self.time_calculation_string = time_input,
             Message::CalculateTimeResultPressed => {
                 let times = self.parse_times();
-                let operations = self.parse_operations();
-                self.time_result = self.calculate_time(times, operations);
+                let operation = self.parse_operation();
+                self.time_result = self.calculate_time(times, operation);
             }
         }
     }
