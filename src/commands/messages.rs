@@ -12,4 +12,8 @@ pub enum Message {
     DurationStartTimeChanged(String),
     DurationEndTimeChanged(String),
     DurationCalculatePressed,
+    TimeConverterHoursChanged(String),
+    TimeConverterMinutesChanged(String),
+    TimeConverterSecondsChanged(String),
+    TimeConverterCalculatePressed,
 }

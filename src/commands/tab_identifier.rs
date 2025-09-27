@@ -3,4 +3,5 @@ pub enum TabIdentifier {
     #[default]
     EndTime,
     Duration,
+    TimeConverter,
 }

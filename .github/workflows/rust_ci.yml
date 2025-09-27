@@ -12,11 +12,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - name: Run tests
         run: cargo test
@@ -27,6 +30,10 @@ jobs:
     needs: [test]
     steps:
       - uses: actions/checkout@v4
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
       - uses: Swatinem/rust-cache@v2
       - name: Lint
         run: cargo clippy -- -D clippy::unwrap_used -D clippy::expect_used -D clippy::panic -D unused_must_use
@@ -37,6 +44,10 @@ jobs:
     needs: [lint]
     steps:
       - uses: actions/checkout@v4
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
       - uses: Swatinem/rust-cache@v2
       - name: Format
         run: cargo fmt --all -- --check
