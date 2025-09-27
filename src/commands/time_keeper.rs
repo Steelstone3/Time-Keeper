@@ -25,6 +25,27 @@ impl TimeKeeper {
             Message::DurationCalculatePressed => {
                 self.duration.duration_result = self.calculate_duration();
             }
+            Message::TimeConverterHoursChanged(hours) => {
+                self.time_converter.hours =
+                    hours.trim().parse::<u32>().unwrap_or_default().clamp(0, 24);
+            }
+            Message::TimeConverterMinutesChanged(minutes) => {
+                self.time_converter.minutes = minutes
+                    .trim()
+                    .parse::<u32>()
+                    .unwrap_or_default()
+                    .clamp(0, 1440);
+            }
+            Message::TimeConverterSecondsChanged(seconds) => {
+                self.time_converter.seconds = seconds
+                    .trim()
+                    .parse::<u32>()
+                    .unwrap_or_default()
+                    .clamp(0, 86400);
+            }
+            Message::TimeConverterCalculatePressed => {
+                self.time_converter.time_converter_result = self.convert_time();
+            }
         }
     }
 }

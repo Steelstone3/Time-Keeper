@@ -22,6 +22,13 @@ impl TimeKeeper {
 
                 column!(self.menu_view(), tab_bar, contents)
             }
+            TabIdentifier::TimeConverter => {
+                let tab_bar = selected_tab_bar(&TabIdentifier::TimeConverter);
+
+                let contents = Scrollable::new(column!().push(self.time_converter_view()));
+
+                column!(self.menu_view(), tab_bar, contents)
+            }
         }
     }
 }
@@ -35,6 +42,10 @@ fn selected_tab_bar(active_tab: &TabIdentifier) -> TabBar<'static, Message, TabI
         .push(
             TabIdentifier::Duration,
             TabLabel::IconText('\u{231B}', "Duration".to_string()),
+        )
+        .push(
+            TabIdentifier::TimeConverter,
+            TabLabel::IconText('\u{267B}', "Time Converter".to_string()),
         )
         .set_active_tab(active_tab)
 }

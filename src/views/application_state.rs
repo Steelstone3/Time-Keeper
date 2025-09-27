@@ -13,6 +13,9 @@ impl TimeKeeper {
         match tab_identifier {
             TabIdentifier::EndTime => self.application_state.tab = TabIdentifier::EndTime,
             TabIdentifier::Duration => self.application_state.tab = TabIdentifier::Duration,
+            TabIdentifier::TimeConverter => {
+                self.application_state.tab = TabIdentifier::TimeConverter
+            }
         }
     }
 
