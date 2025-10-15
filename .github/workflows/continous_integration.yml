@@ -1,4 +1,4 @@
-name: Rust Continous Integration
+name: Continous Integration
 
 on:
   push:
@@ -12,12 +12,11 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
@@ -29,7 +28,7 @@ jobs:
     timeout-minutes: 15
     needs: [test]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -43,7 +42,7 @@ jobs:
     timeout-minutes: 15
     needs: [lint]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
