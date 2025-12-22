@@ -7,9 +7,12 @@ mod models;
 mod views;
 
 pub fn main() -> iced::Result {
-    iced::application("Time Keeper", TimeKeeper::update, TimeKeeper::view)
+    iced::application(|| TimeKeeper::boot(), TimeKeeper::update, TimeKeeper::view)
         .theme(TimeKeeper::theme)
         .antialiasing(true)
-        .settings(Settings::default())
+        .settings(Settings {
+            id: Some("Time Keeper".to_string()),
+            ..Default::default()
+        })
         .run()
 }
