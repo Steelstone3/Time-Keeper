@@ -5,21 +5,21 @@ use iced_aw::Card;
 impl TimeKeeper {
     pub fn duration_view(&self) -> Column<'_, Message> {
         let contents = column!()
-            .push(text("Start Time"))
+            .push(text("Start Date/Time"))
             .spacing(10)
             .padding(10)
             .push(
-                text_input("e.g 14:00", &self.duration.start_time)
-                    .on_input(Message::DurationStartTimeChanged),
+                text_input("e.g 12/5/2025 or 14:00", &self.duration.start)
+                    .on_input(Message::DurationStartChanged),
             )
             .padding(10)
             .spacing(10)
-            .push(text("End Time"))
+            .push(text("End Date/Time"))
             .spacing(10)
             .padding(10)
             .push(
-                text_input("e.g 13:00", &self.duration.end_time)
-                    .on_input(Message::DurationEndTimeChanged),
+                text_input("e.g 16/5/2025 or 13:00", &self.duration.end)
+                    .on_input(Message::DurationEndChanged),
             )
             .padding(10)
             .spacing(10)

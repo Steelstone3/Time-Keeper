@@ -1,6 +1,6 @@
 [package]
 name = "time-keeper"
-version = "1.2.2"
+version = "1.2.3"
 authors = ["Skippy <steelstone3@gmail.com>"]
 edition = "2024"
 homepage = "https://github.com/Steelstone3/Time-Keeper"
@@ -25,8 +25,11 @@ opt-level = 0
 [profile.dev.package."*"]
 opt-level = 3
 
+[dev-dependencies]
+rstest = "0"
+pretty_assertions = "0"
+
 [dependencies]
 iced = "0.14"
 iced_aw = "0.13"
-chrono = {version = "0", default-features = false }
-rstest = "0"
+chrono = { version = "0", default-features = false }

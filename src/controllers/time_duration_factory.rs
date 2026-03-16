@@ -1,6 +1,6 @@
 use chrono::{Duration, TimeDelta};
 
-pub fn duration_factory(duration: &str) -> Result<TimeDelta, ()> {
+pub fn time_duration_factory(duration: &str) -> Result<TimeDelta, ()> {
     if duration.contains('-') {
         return Err(());
     }
@@ -59,8 +59,8 @@ pub fn duration_factory(duration: &str) -> Result<TimeDelta, ()> {
 }
 
 #[cfg(test)]
-mod duration_factory_should {
-    use crate::controllers::duration_factory::duration_factory;
+mod time_duration_factory_should {
+    use crate::controllers::time_duration_factory::time_duration_factory;
     use chrono::{Duration, TimeDelta};
     use rstest::rstest;
 
@@ -73,7 +73,7 @@ mod duration_factory_should {
     #[case("23:59", Duration::hours(23) + Duration::minutes(59))]
     fn create(#[case] duration: String, #[case] expected_duration_result: TimeDelta) {
         // When
-        let duration_result = duration_factory(&duration);
+        let duration_result = time_duration_factory(&duration);
 
         // Then
         assert_eq!(expected_duration_result, duration_result.unwrap())
@@ -92,6 +92,6 @@ mod duration_factory_should {
     #[should_panic]
     fn create_invalid(#[case] duration: String) {
         // When
-        let _ = duration_factory(&duration).unwrap();
+        let _ = time_duration_factory(&duration).unwrap();
     }
 }

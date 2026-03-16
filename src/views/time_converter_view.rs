@@ -5,6 +5,13 @@ use iced_aw::Card;
 impl TimeKeeper {
     pub fn time_converter_view(&self) -> Column<'_, Message> {
         let contents = column!()
+            .push(text("Days"))
+            .spacing(10)
+            .padding(10)
+            .push(
+                text_input("Days e.g 7", &self.time_converter.days.to_string())
+                    .on_input(Message::TimeConverterDaysChanged),
+            )
             .push(text("Hours"))
             .spacing(10)
             .padding(10)

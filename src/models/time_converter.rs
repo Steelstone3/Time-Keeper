@@ -1,5 +1,6 @@
 #[derive(Default)]
 pub struct TimeConverter {
+    pub days: u32,
     pub hours: u32,
     pub minutes: u32,
     pub seconds: u32,
