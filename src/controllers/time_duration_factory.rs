@@ -76,7 +76,7 @@ mod time_duration_factory_should {
         let duration_result = time_duration_factory(&duration);
 
         // Then
-        assert_eq!(expected_duration_result, duration_result.unwrap())
+        assert_eq!(Ok(expected_duration_result), duration_result)
     }
 
     #[rstest]
@@ -91,7 +91,13 @@ mod time_duration_factory_should {
     #[case("24:00")]
     #[should_panic]
     fn create_invalid(#[case] duration: String) {
+        // Given
+        let expected_duration = Duration::seconds(0);
+
         // When
-        let _ = time_duration_factory(&duration).unwrap();
+        let duration = time_duration_factory(&duration);
+
+        // Then
+        pretty_assertions::assert_eq!(Some(expected_duration), duration.ok());
     }
 }

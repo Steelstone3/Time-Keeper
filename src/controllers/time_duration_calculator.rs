@@ -91,6 +91,6 @@ mod time_duration_calculator_should {
         let duration_result = time_keeper.calculate_time_duration();
 
         // Then
-        assert_eq!(expected_duration_result, duration_result.unwrap());
+        assert_eq!(Ok(expected_duration_result), duration_result);
     }
 }

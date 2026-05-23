@@ -51,6 +51,6 @@ mod date_duration_calculator_should {
         let duration_result = time_keeper.calculate_date_duration();
 
         // Then
-        pretty_assertions::assert_eq!(expected_duration_result, duration_result.unwrap());
+        pretty_assertions::assert_eq!(Ok(expected_duration_result), duration_result);
     }
 }

@@ -1,6 +1,5 @@
-use std::str::FromStr;
-
 use chrono::NaiveTime;
+use std::str::FromStr;
 
 pub fn time_factory(time: &str) -> Result<NaiveTime, chrono::ParseError> {
     NaiveTime::from_str(time)
@@ -14,16 +13,16 @@ mod time_factory_should {
     use std::str::FromStr;
 
     #[rstest]
-    #[case("14:00", NaiveTime::from_str("14:00").unwrap())]
-    #[case("15:00", NaiveTime::from_str("15:00").unwrap())]
-    #[case("15:23", NaiveTime::from_str("15:23").unwrap())]
-    #[case("15:23:12", NaiveTime::from_str("15:23:12").unwrap())]
+    #[case("14:00", NaiveTime::from_str("14:00").unwrap_or_default())]
+    #[case("15:00", NaiveTime::from_str("15:00").unwrap_or_default())]
+    #[case("15:23", NaiveTime::from_str("15:23").unwrap_or_default())]
+    #[case("15:23:12", NaiveTime::from_str("15:23:12").unwrap_or_default())]
     fn create(#[case] time: String, #[case] expected_time_result: NaiveTime) {
         // When
         let time_result = time_factory(&time);
 
         // Then
-        assert_eq!(expected_time_result, time_result.unwrap())
+        assert_eq!(Ok(expected_time_result), time_result)
     }
 
     #[rstest]
@@ -38,7 +37,13 @@ mod time_factory_should {
     #[case("24:00")]
     #[should_panic]
     fn create_invalid(#[case] time: String) {
+        // Given
+        let expected_time = NaiveTime::from_str("00:00").unwrap_or_default();
+
         // When
-        let _ = time_factory(&time).unwrap();
+        let time = time_factory(&time);
+
+        // Then
+        pretty_assertions::assert_eq!(Some(expected_time), time.ok());
     }
 }

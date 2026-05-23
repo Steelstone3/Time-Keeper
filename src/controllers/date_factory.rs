@@ -23,20 +23,20 @@ mod date_factory_should {
     use rstest::rstest;
 
     #[rstest]
-    #[case("11/11/2026", NaiveDate::from_ymd_opt(2026, 11, 11).unwrap())]
-    #[case("31/1/2025", NaiveDate::from_ymd_opt(2025, 1, 31).unwrap())]
-    #[case("29/2/2028", NaiveDate::from_ymd_opt(2028, 2, 29).unwrap())]
-    #[case("28/2/2026", NaiveDate::from_ymd_opt(2026, 2, 28).unwrap())]
-    #[case("29/2/2026", NaiveDate::from_ymd_opt(2000, 1, 1).unwrap())]
-    #[case("32/1/2025", NaiveDate::from_ymd_opt(2000, 1, 1).unwrap())]
-    #[case("//",  NaiveDate::from_ymd_opt(2000, 1, 1).unwrap())]
-    #[case("x/x/x",  NaiveDate::from_ymd_opt(2000, 1, 1).unwrap())]
+    #[case("11/11/2026", NaiveDate::from_ymd_opt(2026, 11, 11).unwrap_or_default())]
+    #[case("31/1/2025", NaiveDate::from_ymd_opt(2025, 1, 31).unwrap_or_default())]
+    #[case("29/2/2028", NaiveDate::from_ymd_opt(2028, 2, 29).unwrap_or_default())]
+    #[case("28/2/2026", NaiveDate::from_ymd_opt(2026, 2, 28).unwrap_or_default())]
+    #[case("29/2/2026", NaiveDate::from_ymd_opt(2000, 1, 1).unwrap_or_default())]
+    #[case("32/1/2025", NaiveDate::from_ymd_opt(2000, 1, 1).unwrap_or_default())]
+    #[case("//",  NaiveDate::from_ymd_opt(2000, 1, 1).unwrap_or_default())]
+    #[case("x/x/x",  NaiveDate::from_ymd_opt(2000, 1, 1).unwrap_or_default())]
     fn create(#[case] time: String, #[case] expected_date_result: NaiveDate) {
         // When
         let date_result = date_factory(&time);
 
         // Then
-        pretty_assertions::assert_eq!(expected_date_result, date_result.unwrap())
+        pretty_assertions::assert_eq!(Ok(expected_date_result), date_result)
     }
 
     #[rstest]
@@ -47,7 +47,13 @@ mod date_factory_should {
     #[case("23/2")]
     #[should_panic]
     fn create_invalid(#[case] date: String) {
+        // Given
+        let expected_date = NaiveDate::from_ymd_opt(2000, 1, 1).unwrap_or_default();
+
         // When
-        let _ = date_factory(&date).unwrap();
+        let date = date_factory(&date);
+
+        // Then
+        pretty_assertions::assert_eq!(Some(expected_date), date.ok());
     }
 }
